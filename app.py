@@ -180,7 +180,6 @@ st.markdown(f"""
         text-decoration: underline !important;
         text-underline-offset: 10px !important;
     }}
-    <style>
     /* OCULTAR TODO EL HEADER Y FOOTER DE RAÍZ */
     div[data-testid="stToolbar"],
     div[data-testid="stDecoration"],
@@ -188,13 +187,13 @@ st.markdown(f"""
     header, 
     footer, 
     #MainMenu, 
-    .stAppDeployButton {
+    .stAppDeployButton {{
         display: none !important;
         visibility: hidden !important;
         height: 0 !important;
-    }
-</style>
-""", unsafe_allow_html=True)
+    }}
+    </style>
+    """, unsafe_allow_html=True)
 
 # SECCIÓN 3: CABECERA (LOGO SUPERIOR Y REDES)
 # -----------------------------------------------------------------
@@ -859,4 +858,5 @@ components.html("""
     .medium-zoom-image--opened { z-index: 1000000 !important; }
 </style>
 """, height=0)
+
 
