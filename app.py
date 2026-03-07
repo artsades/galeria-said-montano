@@ -802,15 +802,7 @@ if opcion:
     desplegar_info_servicio(opcion)
 
 import streamlit.components.v1 as components
-
-import streamlit.components.v1 as components
-
-import streamlit.components.v1 as components
-
-import streamlit.components.v1 as components
-
-import streamlit.components.v1 as components
-
+#================================================
 # --- LIMPIEZA DE ICONOS EXTERNOS Y ZOOM ---
 components.html("""
 <script src="https://unpkg.com/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
@@ -836,3 +828,4 @@ components.html("""
     setInterval(limpiezaTotal, 1000);
 </script>
 """, height=0)
+
