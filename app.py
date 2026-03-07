@@ -800,30 +800,41 @@ if opcion:
 
 import streamlit.components.v1 as components
 
-# --- SOLO ZOOM LIBRE PARA LAS FOTOS ---
+import streamlit.components.v1 as components
+
+# --- ZOOM RECARGADO (SOLUCIÓN NUBE) ---
 components.html("""
 <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
 <script>
-    const zoom = mediumZoom('img', { background: 'rgba(0,0,0,0.9)' });
+    function aplicarZoom() {
+        // Buscamos todas las imágenes excepto el logo
+        const images = Array.from(document.querySelectorAll('img')).filter(img => img.width > 100);
+        if (images.length > 0) {
+            mediumZoom(images, {
+                margin: 0,
+                background: 'rgba(0,0,0,0.9)'
+            });
+        }
+    }
 
-    zoom.on('open', () => {
-        // Creamos una entrada artificial en el historial
-        window.history.pushState(null, null, window.location.href);
+    // Ejecutamos al cargar
+    setTimeout(aplicarZoom, 1500);
+
+    // Y seguimos vigilando por si aparecen fotos nuevas (como en el modal)
+    const observer = new MutationObserver(() => {
+        aplicarZoom();
     });
 
-    // Esta es la clave: detectamos el botón de atrás y cancelamos la salida
-    window.onpopstate = function (event) {
-        if (zoom.isOpen()) {
-            zoom.close();
-            // Evitamos que el navegador siga retrocediendo
-            window.history.pushState(null, null, window.location.href);
-        }
-    };
-
-    zoom.on('close', () => {
-        // No hacemos nada con el historial para dejarlo limpio
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
     });
 </script>
+<style>
+    /* Aseguramos que el zoom esté por encima de todo */
+    .medium-zoom-overlay, .medium-zoom-image--opened {
+        z-index: 999999 !important;
+    }
+</style>
 """, height=0)
 
-    #===   streamlit run app.py   ===#
