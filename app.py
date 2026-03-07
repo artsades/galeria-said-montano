@@ -859,4 +859,31 @@ components.html("""
 </style>
 """, height=0)
 
+import streamlit.components.v1 as components
+
+# --- ESTE ES EL BLOQUE QUE FALTA ---
+components.html("""
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
+<script>
+    function limpiarYZoom() {
+        // 1. Matar logos con JS (por si el CSS falla)
+        const selectors = ['header', 'footer', '#MainMenu', '.stAppDeployButton', 'div[data-testid="stStatusWidget"]'];
+        selectors.forEach(s => {
+            const el = document.querySelector(s);
+            if (el) el.style.display = 'none';
+        });
+
+        // 2. Activar Zoom en las obras
+        const images = Array.from(document.querySelectorAll('img')).filter(img => img.width > 60);
+        mediumZoom(images, { margin: 0, background: 'rgba(0,0,0,0.9)' });
+    }
+
+    // Intentar limpiar varias veces mientras carga la página
+    setTimeout(limpiarYZoom, 500);
+    setTimeout(limpiarYZoom, 2000);
+    
+    // Vigilar si el usuario abre "Ver detalles" para limpiar ahí también
+    new MutationObserver(limpiarYZoom).observe(document.body, { childList: true, subtree: true });
+</script>
+""", height=0)
 
