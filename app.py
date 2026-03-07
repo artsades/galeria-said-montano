@@ -376,6 +376,7 @@ with st.expander("SOBRE EL ARTISTA"):
         </tr>
     </table>
 </div>
+</div>
 ''', unsafe_allow_html=True)
     
 # LÍNEA EXTRA DE SEGURIDAD PARA LA GALERÍA
@@ -796,3 +797,4 @@ if opcion:
 
 
     #===   streamlit run app.py   ===#
+
