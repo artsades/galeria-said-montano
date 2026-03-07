@@ -5,7 +5,6 @@ import pandas as pd
 import os
 import base64
 
-st.markdown('<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">', unsafe_allow_html=True)
 # --- BÓVEDA SEO: PALABRAS INVISIBLES PARA GOOGLE ---
 PALABRAS_SEO = "Said Montaño, artista visual mexicano, pintura al óleo CDMX, arte contemporáneo oscuro, realismo figurativo, cuadros al óleo, galería de arte online México, arte simbólico, escultura contemporánea, comprar arte directo artista, estudio de arte Ciudad de México, fine art photography, coleccionismo de arte, arte figurativo oscuro."
 
@@ -23,7 +22,7 @@ def get_favicon_final():
                 path_fav = os.path.join(folder, archivo)
                 with open(path_fav, "rb") as f:
                     return f"data:image/png;base64,{base64.b64encode(f.read()).decode()}"
-    return "https://saidmontano.art/static/said_perfil.jpg" # Plan C: Tu logo de la web
+    return "https://saidmontano.art/static/logo_said_montano.png" # Plan C: Tu logo de la web
 
 fav_icon_data = get_favicon_final()
 
@@ -348,39 +347,35 @@ st.markdown('''
 ''', unsafe_allow_html=True)
 
 with st.expander("SOBRE EL ARTISTA"):
-    # Definimos las columnas
-    col_foto, col_texto1, col_texto2 = st.columns([1, 2, 2])
+    img_html = ""
+    if foto_b64:
+        # Foto con borde circular y tamaño ajustado
+        img_html = f'<img src="data:image/jpeg;base64,{foto_b64}" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid #eeeeee; margin-bottom: 10px;">'
     
-    with col_foto: # <--- Aquí corregimos el nombre de 'col1' a 'col_foto'
-        # Usamos el link que funciona en tu GitHub
-        foto_url = "https://raw.githubusercontent.com/artsades/galeria-said-montano/main/said_perfil.jpg"
-        st.markdown(f'''
-            <div style="text-align: center; margin-bottom: 20px;">
-                <img src="{foto_url}" style="
-                    width: 120px; 
-                    height: 120px; 
-                    border-radius: 50%; 
-                    object-fit: cover; 
-                    border: 2px solid #eeeeee; 
-                    box-shadow: 0px 4px 6px rgba(0,0,0,0.3);">
-            </div>
-        ''', unsafe_allow_html=True)
-        
-    with col_texto1:
-        st.markdown("""
-        <div style="color: #000000; font-family: 'Courier Prime', monospace; font-size: 15px; text-align: justify; line-height: 1.6;">
-            Said Montaño es un artista visual mexicano cuya práctica se centra principalmente en la pintura al óleo sobre lienzo. 
-            Su trabajo explora estados emocionales contenidos y tensiones psicológicas que operan de forma silenciosa y persistente.
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col_texto2:
-        st.markdown("""
-        <div style="color: #000000; font-family: 'Courier Prime', monospace; font-size: 15px; text-align: justify; line-height: 1.6;">
-            Paralelamente, ha desarrollado una línea escultórica que mantiene el mismo lenguaje oscuro y personal. 
-            Explora la materialidad del cuerpo y sus restos como símbolos de permanencia, desgaste y memoria.
-        </div>
-        """, unsafe_allow_html=True)
+    # El truco es quitar espacios innecesarios al inicio de las líneas de HTML
+    st.markdown(f'''
+<div style="width: 100%; overflow-x: auto;">
+    <table style="width: 100%; border-collapse: collapse; border: none;">
+        <tr>
+            <td style="width: 15%; vertical-align: top; text-align: center; padding-right: 15px;">
+                {img_html}
+            </td>
+            <td style="width: 42.5%; vertical-align: top; font-family: 'Courier Prime', monospace; font-size: 0.85rem; text-align: justify; color: #FFFFFF; line-height: 1.7; padding-right: 15px;">
+                Said Montaño es un artista visual mexicano cuya práctica se centra principalmente en la pintura al óleo sobre lienzo. 
+                Su trabajo explora estados emocionales contenidos y tensiones psicológicas que operan de forma silenciosa y persistente, 
+                construyendo escenas figurativas de alta carga simbólica. A través de una estética oscura, el cuerpo humano 
+                aparece fragmentado o integrado dentro de estructuras que regulan identidad y control.
+            </td>
+            <td style="width: 42.5%; vertical-align: top; font-family: 'Courier Prime', monospace; font-size: 0.85rem; text-align: justify; color: #FFFFFF; line-height: 1.7;">
+                Paralelamente, ha desarrollado una línea escultórica que mantiene el mismo lenguaje oscuro y personal. 
+                Explora la materialidad del cuerpo y sus restos como símbolos de permanencia, desgaste y memoria. 
+                Su trabajo ha sido seleccionado consecutivamente en diversas plataformas nacionales de exhibición, 
+                consolidando una identidad visual coherente y técnica.
+            </td>
+        </tr>
+    </table>
+</div>
+''', unsafe_allow_html=True)
     
 # LÍNEA EXTRA DE SEGURIDAD PARA LA GALERÍA
 st.write("")
@@ -451,105 +446,74 @@ if archivos_csv:
         FUENTE_INDUSTRIAL = "'Courier Prime', monospace"
         C_FONDO_MODAL = "#FFFFFF"
 
-        # === COPIAR DESDE AQUÍ: CONFIGURACIÓN 2 COLUMNAS MÓVIL / 5 PC ===
-        st.markdown("""
-            <style>
-            /* Contenedor de las columnas */
-            [data-testid="stHorizontalBlock"] {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-            /* Ajuste para Celulares (2 columnas) */
-            @media (max-width: 768px) {
-                [data-testid="stHorizontalBlock"] > div {
-                    min-width: 45% !important;
-                    flex: 1 1 45% !important;
-                }
-                /* Ajuste de altura de imagen para celular para que no se vea gigante */
-                div[class*="st-key-img_btn_"] button {
-                    height: 250px !important;
-                }
-            }
-            /* Ajuste para PC (5 columnas) */
-            @media (min-width: 769px) {
-                [data-testid="stHorizontalBlock"] > div {
-                    min-width: 18% !important;
-                    flex: 1 1 18% !important;
-                }
-            }
-            </style>
-        """, unsafe_allow_html=True)
-        # === HASTA AQUÍ ===
-        
         # --- FUNCIÓN GLOBAL DEL VISOR ---
         @st.dialog(" ", width="large")
         def visor_galeria(id_ref):
-            # Encabezado del visor
             st.markdown(f'<div style="display:flex; justify-content:space-between;"><div style="font-family:Courier Prime; font-size:0.7rem;">ARCHIVO VISUAL</div><img src="data:image/png;base64,{logo_main_b64}" style="width:100px; filter:brightness(0);"></div><hr>', unsafe_allow_html=True)
-            
-            # IMAGEN PRINCIPAL (Con link directo de GitHub para habilitar zoom)
-            url_principal = f"https://raw.githubusercontent.com/artsades/galeria-said-montano/main/assets/{id_ref}.jpg"
-            st.markdown(f'<img src="{url_principal}" style="width:100%; margin-bottom: 20px;">', unsafe_allow_html=True)
-            
-            # IMÁGENES DE DETALLE (Bucle corregido para zoom)
+            st.image(f"assets/{id_ref}.jpg", use_container_width=True)
             for d in range(1, 6):
-                ruta_detalle = f"assets/{id_ref}_det_{d}.jpg"
-                if os.path.exists(ruta_detalle):
-                    url_det = f"https://raw.githubusercontent.com/artsades/galeria-said-montano/main/{ruta_detalle}"
-                    st.markdown(f'<img src="{url_det}" style="width:100%; margin-bottom: 20px;">', unsafe_allow_html=True)
-            
-            # --- CASO A: SI ES ESTUDIO / PROCESO ---
-        if seccion_actual == "proceso":
-            st.image(ruta_img, use_container_width=True)
-            st.markdown(f'''
-                <div style="font-family: {FUENTE_INDUSTRIAL}; font-size: 0.65rem; color: #666; margin-top: -10px; line-height: 1.2; padding-bottom: 20px;">
-                    <b style="color:#000;">{row.get('titulo', 'S/T').upper()}</b><br>
-                    {row.get('descripcion', 'Registro de estudio.')}
-                </div>
-            ''', unsafe_allow_html=True)
+                if os.path.exists(f"assets/{id_ref}_det_{d}.jpg"):
+                    st.image(f"assets/{id_ref}_det_{d}.jpg", use_container_width=True)
 
-        # --- CASO B: SI ES GALERÍA COMERCIAL ---
-        else:
-            # 1. CONVERSIÓN Y LLAVE
-            img_b64 = image_to_base64(ruta_img)
-            t_key = tecnica_sel.replace(" ", "_")
+        cols = st.columns(5, gap="medium")
+        for i, (idx, row) in enumerate(datos_galeria.iterrows()):
+            with cols[i % 5]:
+                id_obra = str(row.get('id_unico')).split('.')[0]
+                ruta_img = f"assets/{id_obra}.jpg"
+                
+                if os.path.exists(ruta_img):
+                    # --- CASO A: SI ES ESTUDIO / PROCESO ---
+                    if seccion_actual == "proceso":
+                        st.image(ruta_img, use_container_width=True)
+                        st.markdown(f'''
+                            <div style="font-family: {FUENTE_INDUSTRIAL}; font-size: 0.65rem; color: #666; margin-top: -10px; line-height: 1.2; padding-bottom: 20px;">
+                                <b style="color:#000;">{row.get('titulo', 'S/T').upper()}</b><br>
+                                {row.get('descripcion', 'Registro de estudio.')}
+                            </div>
+                        ''', unsafe_allow_html=True)
 
-            # 2. CSS PARA EL BOTÓN-IMAGEN
-            st.markdown(f"""<style>
-                div.st-key-img_btn_{id_obra}_{t_key} button {{
-                    background-image: url("data:image/jpeg;base64,{img_b64}") !important;
-                    background-size: cover !important;
-                    background-position: center !important;
-                    height: {ALTO_OBRA} !important;
-                    width: 100% !important;
-                    border: 1px solid #eee !important;
-                    background-color: transparent !important;
-                    border-radius: 0px !important;
-                }}
-            </style>""", unsafe_allow_html=True)
+                    # --- CASO B: SI ES GALERÍA COMERCIAL ---
+                    else:
+                        # 1. CONVERSIÓN Y LLAVE
+                        img_b64 = image_to_base64(ruta_img)
+                        t_key = tecnica_sel.replace(" ", "_")
 
-            # 3. EL BOTÓN-IMAGEN
-            if st.button("", key=f"img_btn_{id_obra}_{t_key}", use_container_width=True):
-                visor_galeria(id_obra)
+                        # 2. CSS PARA EL BOTÓN-IMAGEN
+                        st.markdown(f"""<style>
+                            div.st-key-img_btn_{id_obra}_{t_key} button {{
+                                background-image: url("data:image/jpeg;base64,{img_b64}") !important;
+                                background-size: cover !important;
+                                background-position: center !important;
+                                height: {ALTO_OBRA} !important;
+                                width: 100% !important;
+                                border: 1px solid #eee !important;
+                                background-color: transparent !important;
+                                border-radius: 0px !important;
+                            }}
+                        </style>""", unsafe_allow_html=True)
 
-            # 4. CÁLCULO DE PRECIO
-            import re
-            val_p = str(row.get('precio', '0'))
-            solo_n = re.sub(r'[^0-9.]', '', val_p)
-            try: precio_f = f"${float(solo_n):,.0f} MXN"
-            except: precio_f = "CONSULTAR PRECIO"
+                        # 3. EL BOTÓN-IMAGEN
+                        if st.button("", key=f"img_btn_{id_obra}_{t_key}", use_container_width=True):
+                            visor_galeria(id_obra)
 
-            # 5. FICHA TÉCNICA
-            st.markdown(f'''
-            <div style="width: 100%; font-family: {FUENTE_INDUSTRIAL}; text-transform: uppercase; text-align: left; border-top: 1px solid #000; padding-top: 10px; margin-top: -15px;">
-                <p style="font-size: 1.0rem; color: #000; font-weight: bold; margin: 0;">{row.get('titulo', 'S/T')}</p>
-                <p style="font-size: 0.7rem; color: #444; margin: 2px 0;">SERIE: {row.get('serie', 'S/S')}</p>
-                <p style="font-size: 0.75rem; color: #444; margin: 0;">{str(row.get('tecnica', '')).upper()} SOBRE {str(row.get('soporte', '')).upper()}</p>
-                <p style="font-size: 0.75rem; color: #444; margin: 0;">{row.get('medidas', '')}</p>
-                <p style="font-size: {T_PRECIO}; color: #000; font-weight: bold; margin-top: 10px;">{precio_f}</p>
-                <p style="font-size: 0.65rem; font-weight: bold; color: #000; margin-bottom: 10px;">[{str(row.get('disponibilidad', 'EN VENTA')).upper()}]</p>
-            </div>''', unsafe_allow_html=True)
+                        # 4. CÁLCULO DE PRECIO
+                        import re
+                        val_p = str(row.get('precio', '0'))
+                        solo_n = re.sub(r'[^0-9.]', '', val_p)
+                        try: precio_f = f"${float(solo_n):,.0f} MXN"
+                        except: precio_f = "CONSULTAR PRECIO"
+
+                        # 5. FICHA TÉCNICA
+                        st.markdown(f'''
+                        <div style="width: 100%; font-family: {FUENTE_INDUSTRIAL}; text-transform: uppercase; text-align: left; border-top: 1px solid #000; padding-top: 10px; margin-top: -15px;">
+                            <p style="font-size: 1.0rem; color: #000; font-weight: bold; margin: 0;">{row.get('titulo', 'S/T')}</p>
+                            <p style="font-size: 0.7rem; color: #444; margin: 2px 0;">SERIE: {row.get('serie', 'S/S')}</p>
+                            <p style="font-size: 0.75rem; color: #444; margin: 0;">{str(row.get('tecnica', '')).upper()} SOBRE {str(row.get('soporte', '')).upper()}</p>
+                            <p style="font-size: 0.75rem; color: #444; margin: 0;">{row.get('medidas', '')}</p>
+                            <p style="font-size: {T_PRECIO}; color: #000; font-weight: bold; margin-top: 10px;">{precio_f}</p>
+                            <p style="font-size: 0.65rem; font-weight: bold; color: #000; margin-bottom: 10px;">[{str(row.get('disponibilidad', 'EN VENTA')).upper()}]</p>
+                        </div>''', unsafe_allow_html=True)
+
                         # 6. BOTÓN DE DETALLES + WHATSAPP (EL QUE YA TENÍAS)
                         # --- Pega aquí el bloque de las columnas (col_det, col_wa) que arreglamos antes ---
 
@@ -829,24 +793,4 @@ if opcion:
     st.session_state.key_srv += 1
     desplegar_info_servicio(opcion)
 
-
     #===   streamlit run app.py   ===#
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
