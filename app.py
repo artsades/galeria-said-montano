@@ -1,4 +1,3 @@
-
 # SECCIÓN 1: CONFIGURACIÓN Y RECURSOS
 # -----------------------------------------------------------------
 import streamlit as st
@@ -6,6 +5,7 @@ import pandas as pd
 import os
 import base64
 
+st.markdown('<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">', unsafe_allow_html=True)
 # --- BÓVEDA SEO: PALABRAS INVISIBLES PARA GOOGLE ---
 PALABRAS_SEO = "Said Montaño, artista visual mexicano, pintura al óleo CDMX, arte contemporáneo oscuro, realismo figurativo, cuadros al óleo, galería de arte online México, arte simbólico, escultura contemporánea, comprar arte directo artista, estudio de arte Ciudad de México, fine art photography, coleccionismo de arte, arte figurativo oscuro."
 
@@ -800,6 +800,7 @@ if opcion:
 
 
     #===   streamlit run app.py   ===#
+
 
 
 
