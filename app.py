@@ -1,9 +1,13 @@
+
 # SECCIÓN 1: CONFIGURACIÓN Y RECURSOS
 # -----------------------------------------------------------------
 import streamlit as st
 import pandas as pd
 import os
 import base64
+
+import streamlit as st
+st.markdown('<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">', unsafe_allow_html=True)
 
 # --- BÓVEDA SEO: PALABRAS INVISIBLES PARA GOOGLE ---
 PALABRAS_SEO = "Said Montaño, artista visual mexicano, pintura al óleo CDMX, arte contemporáneo oscuro, realismo figurativo, cuadros al óleo, galería de arte online México, arte simbólico, escultura contemporánea, comprar arte directo artista, estudio de arte Ciudad de México, fine art photography, coleccionismo de arte, arte figurativo oscuro."
@@ -176,6 +180,15 @@ st.markdown(f"""
         text-decoration: underline !important;
         text-underline-offset: 10px !important;
     }}
+    /* OCULTAR MENÚ DE STREAMLIT Y ICONO DE GITHUB */
+    #MainMenu {{visibility: hidden;}}
+    header {{visibility: hidden;}}
+    footer {{visibility: hidden;}}
+    
+    /* Esto quita el espacio en blanco que queda arriba al ocultar el header */
+    .stAppDeployButton {{
+        display: none;
+    }}
     </style>
 """, unsafe_allow_html=True)
 
@@ -347,35 +360,27 @@ st.markdown('''
 ''', unsafe_allow_html=True)
 
 with st.expander("SOBRE EL ARTISTA"):
-    img_html = ""
-    if foto_b64:
-        # Foto con borde circular y tamaño ajustado
-        img_html = f'<img src="data:image/jpeg;base64,{foto_b64}" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid #eeeeee; margin-bottom: 10px;">'
+    # Creamos dos columnas. En celular, Streamlit las apila solas si no forzamos el CSS anterior.
+    col_foto, col_texto = st.columns([1, 3])
     
-    # El truco es quitar espacios innecesarios al inicio de las líneas de HTML
-    st.markdown(f'''
-<div style="width: 100%; overflow-x: auto;">
-    <table style="width: 100%; border-collapse: collapse; border: none;">
-        <tr>
-            <td style="width: 15%; vertical-align: top; text-align: center; padding-right: 15px;">
-                {img_html}
-            </td>
-            <td style="width: 42.5%; vertical-align: top; font-family: 'Courier Prime', monospace; font-size: 0.85rem; text-align: justify; color: #FFFFFF; line-height: 1.7; padding-right: 15px;">
-                Said Montaño es un artista visual mexicano cuya práctica se centra principalmente en la pintura al óleo sobre lienzo. 
-                Su trabajo explora estados emocionales contenidos y tensiones psicológicas que operan de forma silenciosa y persistente, 
-                construyendo escenas figurativas de alta carga simbólica. A través de una estética oscura, el cuerpo humano 
-                aparece fragmentado o integrado dentro de estructuras que regulan identidad y control.
-            </td>
-            <td style="width: 42.5%; vertical-align: top; font-family: 'Courier Prime', monospace; font-size: 0.85rem; text-align: justify; color: #FFFFFF; line-height: 1.7;">
-                Paralelamente, ha desarrollado una línea escultórica que mantiene el mismo lenguaje oscuro y personal. 
-                Explora la materialidad del cuerpo y sus restos como símbolos de permanencia, desgaste y memoria. 
-                Su trabajo ha sido seleccionado consecutivamente en diversas plataformas nacionales de exhibición, 
-                consolidando una identidad visual coherente y técnica.
-            </td>
-        </tr>
-    </table>
-</div>
-''', unsafe_allow_html=True)
+    with col_foto:
+        # Foto circular centrada
+        foto_url = "https://raw.githubusercontent.com/artsades/galeria-said-montano/main/said_perfil.jpg"
+        st.markdown(f'''
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img src="{foto_url}" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 2px solid #eeeeee;">
+            </div>
+        ''', unsafe_allow_html=True)
+    
+    with col_texto:
+        # Texto en negro que se ajusta al ancho disponible
+        st.markdown("""
+            <div style="color: #000000; font-family: 'Courier Prime', monospace; font-size: 16px; text-align: left; line-height: 1.6;">
+                Said Montaño es un artista visual mexicano cuya práctica se centra principalmente en la pintura al óleo sobre lienzo. Su trabajo explora estados emocionales contenidos y tensiones psicológicas que operan de forma silenciosa y persistente, construyendo escenas figurativas de alta carga simbólica. A través de una estética oscura, el cuerpo humano aparece fragmentado, intervenido o integrado dentro de estructuras que regulan identidad, control y pertenencia.
+                <br><br>
+                Paralelamente a su producción pictórica, el artista ha desarrollado una línea escultórica que mantiene el mismo lenguaje oscuro y personal, explorando la materialidad del cuerpo y sus restos como símbolos de permanencia, desgaste y memoria. Su trabajo escultórico ha sido seleccionado de manera consecutiva en cinco ediciones dentro de plataformas nacionales de exhibición, consolidando una identidad visual coherente en contextos de alta visibilidad sin diluir su discurso.
+            </div>
+        """, unsafe_allow_html=True)
     
 # LÍNEA EXTRA DE SEGURIDAD PARA LA GALERÍA
 st.write("")
@@ -792,5 +797,33 @@ st.markdown('</div>', unsafe_allow_html=True)
 if opcion:
     st.session_state.key_srv += 1
     desplegar_info_servicio(opcion)
+
+import streamlit.components.v1 as components
+
+# --- SOLO ZOOM LIBRE PARA LAS FOTOS ---
+components.html("""
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
+<script>
+    const zoom = mediumZoom('img', { background: 'rgba(0,0,0,0.9)' });
+
+    zoom.on('open', () => {
+        // Creamos una entrada artificial en el historial
+        window.history.pushState(null, null, window.location.href);
+    });
+
+    // Esta es la clave: detectamos el botón de atrás y cancelamos la salida
+    window.onpopstate = function (event) {
+        if (zoom.isOpen()) {
+            zoom.close();
+            // Evitamos que el navegador siga retrocediendo
+            window.history.pushState(null, null, window.location.href);
+        }
+    };
+
+    zoom.on('close', () => {
+        // No hacemos nada con el historial para dejarlo limpio
+    });
+</script>
+""", height=0)
 
     #===   streamlit run app.py   ===#
