@@ -348,10 +348,11 @@ st.markdown('''
 ''', unsafe_allow_html=True)
 
 with st.expander("SOBRE EL ARTISTA"):
+    # Definimos las columnas
     col_foto, col_texto1, col_texto2 = st.columns([1, 2, 2])
     
-    with col1:
-        # AQUÍ VA EL NUEVO BLOQUE QUE TE PASÉ (el del diseño circular)
+    with col_foto: # <--- Aquí corregimos el nombre de 'col1' a 'col_foto'
+        # Usamos el link que funciona en tu GitHub
         foto_url = "https://raw.githubusercontent.com/artsades/galeria-said-montano/main/said_perfil.jpg"
         st.markdown(f'''
             <div style="text-align: center; margin-bottom: 20px;">
@@ -795,6 +796,7 @@ if opcion:
 
 
     #===   streamlit run app.py   ===#
+
 
 
 
