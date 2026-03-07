@@ -802,39 +802,56 @@ import streamlit.components.v1 as components
 
 import streamlit.components.v1 as components
 
-# --- ZOOM RECARGADO (SOLUCIÓN NUBE) ---
+import streamlit.components.v1 as components
+
+# --- LIMPIEZA TOTAL Y ZOOM FORZADO ---
 components.html("""
 <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
 <script>
-    function aplicarZoom() {
-        // Buscamos todas las imágenes excepto el logo
-        const images = Array.from(document.querySelectorAll('img')).filter(img => img.width > 100);
+    function limpiarYActivar() {
+        // 1. OCULTAR LOGOS DE STREAMLIT Y GITHUB (Nivel Script)
+        const selectors = [
+            'header', 
+            'footer', 
+            '#MainMenu', 
+            '.stAppDeployButton', 
+            'div[data-testid="stStatusWidget"]',
+            'a[href*="github.com"]'
+        ];
+        selectors.forEach(s => {
+            const el = document.querySelector(s);
+            if (el) el.style.display = 'none';
+        });
+
+        // 2. ACTIVAR ZOOM
+        const images = Array.from(document.querySelectorAll('img')).filter(img => img.width > 50);
         if (images.length > 0) {
             mediumZoom(images, {
                 margin: 0,
-                background: 'rgba(0,0,0,0.9)'
+                background: 'rgba(0,0,0,0.95)'
             });
         }
     }
 
-    // Ejecutamos al cargar
-    setTimeout(aplicarZoom, 1500);
+    // Ejecutar varias veces para asegurar que alcance los elementos al cargar
+    setTimeout(limpiarYActivar, 500);
+    setTimeout(limpiarYActivar, 2000);
+    setTimeout(limpiarYActivar, 5000);
 
-    // Y seguimos vigilando por si aparecen fotos nuevas (como en el modal)
-    const observer = new MutationObserver(() => {
-        aplicarZoom();
-    });
-
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
+    // Vigilante para el modal "Ver detalles"
+    const observer = new MutationObserver(limpiarYActivar);
+    observer.observe(document.body, { childList: true, subtree: true });
 </script>
+
 <style>
-    /* Aseguramos que el zoom esté por encima de todo */
-    .medium-zoom-overlay, .medium-zoom-image--opened {
-        z-index: 999999 !important;
+    /* CSS de Respaldo para ocultar logos */
+    header, footer, #MainMenu, .stAppDeployButton {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
     }
+    /* Estilo para que el zoom no falle */
+    .medium-zoom-overlay { z-index: 999999 !important; }
+    .medium-zoom-image--opened { z-index: 1000000 !important; }
 </style>
 """, height=0)
-
