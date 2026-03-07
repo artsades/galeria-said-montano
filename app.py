@@ -809,39 +809,30 @@ import streamlit.components.v1 as components
 
 import streamlit.components.v1 as components
 
-# --- CAZADOR DE LOGOS Y ACTIVADOR DE ZOOM ---
+import streamlit.components.v1 as components
+
+# --- LIMPIEZA DE ICONOS EXTERNOS Y ZOOM ---
 components.html("""
-<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
+<script src="https://unpkg.com/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
 <script>
-    function limpiezaProfunda() {
-        // 1. Buscamos y destruimos los logos repetidamente
-        const elementos = [
-            'header', 'footer', '#MainMenu', 
-            '.stAppDeployButton', '[data-testid="stDecoration"]',
-            '[data-testid="stStatusWidget"]', '[data-testid="stToolbar"]'
-        ];
-        
-        elementos.forEach(selector => {
-            const el = window.parent.document.querySelector(selector);
-            if (el) {
+    function limpiezaTotal() {
+        // 1. ELIMINAR ICONOS FLOTANTES (Accesibilidad/Nube)
+        // Buscamos cualquier cosa que esté fija en las esquinas
+        const flotantes = window.parent.document.querySelectorAll('div, iframe, button');
+        flotantes.forEach(el => {
+            const style = window.getComputedStyle(el);
+            if (style.position === 'fixed' && (style.bottom === '0px' || style.right === '0px')) {
+                // Si detectamos los colores de tu captura (celeste/rojo), los borramos
                 el.style.display = 'none';
-                el.style.visibility = 'hidden';
             }
         });
 
-        // 2. Intentamos activar el zoom en las imágenes del padre
+        // 2. ZOOM EN TUS OBRAS
         const images = Array.from(window.parent.document.querySelectorAll('img')).filter(img => img.width > 60);
-        if (images.length > 0) {
-            mediumZoom(images, { margin: 0, background: 'rgba(0,0,0,0.95)' });
-        }
+        mediumZoom(images, { margin: 0, background: 'rgba(0,0,0,0.95)' });
     }
 
-    // Ejecutar la limpieza cada 500ms durante los primeros 5 segundos
-    let intentos = 0;
-    const intervalo = setInterval(() => {
-        limpiezaProfunda();
-        intentos++;
-        if (intentos > 10) clearInterval(intervalo);
-    }, 500);
+    // Ejecución continua para ganar la batalla a los iconos
+    setInterval(limpiezaTotal, 1000);
 </script>
 """, height=0)
