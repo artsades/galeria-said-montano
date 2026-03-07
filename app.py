@@ -377,7 +377,7 @@ with st.expander("SOBRE EL ARTISTA"):
     </table>
 </div>
 </div>
-''', unsafe_allow_html=True)
+''', unsafe_allow_html=True) 
     
 # LÍNEA EXTRA DE SEGURIDAD PARA LA GALERÍA
 st.write("")
@@ -797,4 +797,5 @@ if opcion:
 
 
     #===   streamlit run app.py   ===#
+
 
