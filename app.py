@@ -349,10 +349,10 @@ st.markdown('''
 
 with st.expander("SOBRE EL ARTISTA"):
     col_foto, col_texto1, col_texto2 = st.columns([1, 2, 2])
-
-    # Código para la foto circular y estilizada
-        foto_url = "https://raw.githubusercontent.com/artsades/galeria-said-montano/main/said_perfil.jpg.jpg"
-        
+    
+    with col1:
+        # AQUÍ VA EL NUEVO BLOQUE QUE TE PASÉ (el del diseño circular)
+        foto_url = "https://raw.githubusercontent.com/artsades/galeria-said-montano/main/said_perfil.jpg"
         st.markdown(f'''
             <div style="text-align: center; margin-bottom: 20px;">
                 <img src="{foto_url}" style="
@@ -365,6 +365,8 @@ with st.expander("SOBRE EL ARTISTA"):
             </div>
         ''', unsafe_allow_html=True)
 
+    with col2:
+        # Aquí sigue tu texto de la biografía...
     with col_texto1:
         st.markdown("""
         Said Montaño es un artista visual mexicano cuya práctica se centra principalmente en la pintura al óleo sobre lienzo. 
