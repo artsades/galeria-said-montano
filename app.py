@@ -524,16 +524,16 @@ if archivos_csv:
                     }}
                 </style>""", unsafe_allow_html=True)
 
-                        # 3. EL BOTÓN-IMAGEN
-                        if st.button("", key=f"img_btn_{id_obra}_{t_key}", use_container_width=True):
-                            visor_galeria(id_obra)
+            # 3. EL BOTÓN-IMAGEN
+            if st.button("", key=f"img_btn_{id_obra}_{t_key}", use_container_width=True):
+                visor_galeria(id_obra)
 
-                        # 4. CÁLCULO DE PRECIO
-                        import re
-                        val_p = str(row.get('precio', '0'))
-                        solo_n = re.sub(r'[^0-9.]', '', val_p)
-                        try: precio_f = f"${float(solo_n):,.0f} MXN"
-                        except: precio_f = "CONSULTAR PRECIO"
+            # 4. CÁLCULO DE PRECIO
+            import re
+            val_p = str(row.get('precio', '0'))
+            solo_n = re.sub(r'[^0-9.]', '', val_p)
+            try: precio_f = f"${float(solo_n):,.0f} MXN"
+            except: precio_f = "CONSULTAR PRECIO"
 
                         # 5. FICHA TÉCNICA
                         st.markdown(f'''
@@ -827,6 +827,7 @@ if opcion:
 
 
     #===   streamlit run app.py   ===#
+
 
 
 
