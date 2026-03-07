@@ -486,28 +486,24 @@ if archivos_csv:
         # --- FUNCIÓN GLOBAL DEL VISOR ---
         @st.dialog(" ", width="large")
         def visor_galeria(id_ref):
+            # Encabezado del visor
             st.markdown(f'<div style="display:flex; justify-content:space-between;"><div style="font-family:Courier Prime; font-size:0.7rem;">ARCHIVO VISUAL</div><img src="data:image/png;base64,{logo_main_b64}" style="width:100px; filter:brightness(0);"></div><hr>', unsafe_allow_html=True)
-            st.image(f"assets/{id_ref}.jpg", use_container_width=True)
+            
+            # IMAGEN PRINCIPAL (Con link directo de GitHub para habilitar zoom)
+            url_principal = f"https://raw.githubusercontent.com/artsades/galeria-said-montano/main/assets/{id_ref}.jpg"
+            st.markdown(f'<img src="{url_principal}" style="width:100%; margin-bottom: 20px;">', unsafe_allow_html=True)
+            
+            # IMÁGENES DE DETALLE (Bucle corregido para zoom)
             for d in range(1, 6):
-                if os.path.exists(f"assets/{id_ref}_det_{d}.jpg"):
-                    st.image(f"assets/{id_ref}_det_{d}.jpg", use_container_width=True)
-
-        cols = st.columns(5, gap="medium")
-        for i, (idx, row) in enumerate(datos_galeria.iterrows()):
-            with cols[i % 5]:
-                id_obra = str(row.get('id_unico')).split('.')[0]
-                ruta_img = f"assets/{id_obra}.jpg"
-                
-                if os.path.exists(ruta_img):
-                    # --- CASO A: SI ES ESTUDIO / PROCESO ---
-                    if seccion_actual == "proceso":
-                        st.image(ruta_img, use_container_width=True)
-                        st.markdown(f'''
-                            <div style="font-family: {FUENTE_INDUSTRIAL}; font-size: 0.65rem; color: #666; margin-top: -10px; line-height: 1.2; padding-bottom: 20px;">
-                                <b style="color:#000;">{row.get('titulo', 'S/T').upper()}</b><br>
-                                {row.get('descripcion', 'Registro de estudio.')}
-                            </div>
-                        ''', unsafe_allow_html=True)
+                ruta_detalle = f"assets/{id_ref}_det_{d}.jpg"
+                if os.path.exists(ruta_detalle):
+                    url_det = f"https://raw.githubusercontent.com/artsades/galeria-said-montano/main/{ruta_detalle}"
+                    st.markdown(f'<img src="{url_det}" style="width:100%; margin-bottom: 20px;">', unsafe_allow_html=True)
+            
+            # BOTÓN DE CIERRE (Para evitar usar el botón 'atrás' del celular)
+            st.markdown("<br>", unsafe_allow_html=True)
+            if st.button("✕ CERRAR VISTA", use_container_width=True):
+                st.rerun()
 
                     # --- CASO B: SI ES GALERÍA COMERCIAL ---
                     else:
@@ -832,6 +828,7 @@ if opcion:
 
 
     #===   streamlit run app.py   ===#
+
 
 
 
