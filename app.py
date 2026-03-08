@@ -192,6 +192,15 @@ st.markdown(f"""
         visibility: hidden !important;
         height: 0 !important;
     }}
+    /* Intentar tapar los iconos de las esquinas */
+    iframe {{
+        display: none !important;
+    }}
+    
+    /* Si esos iconos son botones de Streamlit, esto los oculta */
+    button[kind="secondary"] {{
+        display: none !important;
+    }}
     </style>
     """, unsafe_allow_html=True)
 
@@ -800,32 +809,24 @@ st.markdown('</div>', unsafe_allow_html=True)
 if opcion:
     st.session_state.key_srv += 1
     desplegar_info_servicio(opcion)
-
 import streamlit.components.v1 as components
-#================================================
-# --- LIMPIEZA DE ICONOS EXTERNOS Y ZOOM ---
+
+# --- ZOOM COMPATIBLE Y LIMPIEZA INTERNA ---
 components.html("""
-<script src="https://unpkg.com/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
 <script>
-    function limpiezaTotal() {
-        // 1. ELIMINAR ICONOS FLOTANTES (Accesibilidad/Nube)
-        // Buscamos cualquier cosa que esté fija en las esquinas
-        const flotantes = window.parent.document.querySelectorAll('div, iframe, button');
-        flotantes.forEach(el => {
-            const style = window.getComputedStyle(el);
-            if (style.position === 'fixed' && (style.bottom === '0px' || style.right === '0px')) {
-                // Si detectamos los colores de tu captura (celeste/rojo), los borramos
-                el.style.display = 'none';
-            }
-        });
-
-        // 2. ZOOM EN TUS OBRAS
-        const images = Array.from(window.parent.document.querySelectorAll('img')).filter(img => img.width > 60);
-        mediumZoom(images, { margin: 0, background: 'rgba(0,0,0,0.95)' });
+    // Función simple que solo toca lo que está permitido
+    function activarZoom() {
+        const images = Array.from(document.querySelectorAll('img')).filter(img => img.width > 60);
+        if (images.length > 0) {
+            mediumZoom(images, {
+                margin: 0,
+                background: 'rgba(0,0,0,0.9)'
+            });
+        }
     }
-
-    // Ejecución continua para ganar la batalla a los iconos
-    setInterval(limpiezaTotal, 1000);
+    // Esperamos un momento a que carguen las fotos
+    setTimeout(activarZoom, 1000);
 </script>
 """, height=0)
 
