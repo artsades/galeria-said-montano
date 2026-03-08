@@ -1,17 +1,38 @@
-
-# SECCIÓN 1: CONFIGURACIÓN Y RECURSOS
+# SECCIÓN 1: CONFIGURACIÓN, RECURSOS Y SEO DINÁMICO
 # -----------------------------------------------------------------
 import streamlit as st
 import pandas as pd
 import os
 import base64
+import requests
+from bs4 import BeautifulSoup
 
-import streamlit as st
+# --- FUNCIÓN DE SEO DINÁMICO (ÓLEO Y ACUARELA) ---
+def obtener_seo_estudio():
+    # Tus bases sólidas para México y USA
+    keywords = [
+        "Said Montaño", "Oil paintings for sale USA", "Pintura al óleo México", 
+        "Acuarelas originales", "Fine art watercolors", "Shipping worldwide Skydropx",
+        "Contemporary art Mexico", "Comprar arte original"
+    ]
+    try:
+        # Intentamos captar tendencias de arte actuales para refrescar el SEO
+        res = requests.get("https://www.saatchiart.com/art/Painting/Realism/", timeout=2)
+        if res.status_code == 200:
+            soup = BeautifulSoup(res.text, 'html.parser')
+            tendencias = [tag.text.strip() for tag in soup.find_all('h3')[:3]]
+            keywords.extend(tendencias)
+    except:
+        pass 
+    return ", ".join(keywords)
+
+# Ejecutamos el motor de SEO
+SEO_DINAMICO = obtener_seo_estudio()
+
 st.markdown('<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">', unsafe_allow_html=True)
 
-# --- BÓVEDA SEO: PALABRAS INVISIBLES PARA GOOGLE ---
-PALABRAS_SEO = "Said Montaño, artista visual mexicano, pintura al óleo CDMX, arte contemporáneo oscuro, realismo figurativo, cuadros al óleo, galería de arte online México, arte simbólico, escultura contemporánea, comprar arte directo artista, estudio de arte Ciudad de México, fine art photography, coleccionismo de arte, arte figurativo oscuro."
-
+# --- BÓVEDA SEO ACTUALIZADA ---
+PALABRAS_SEO = f"{SEO_DINAMICO}, Said Montaño artista, realismo figurativo, arte oscuro, envíos seguros a USA y México."
 # Título dinámico para la pestaña del navegador
 t_pestana = st.session_state.get('tec_ref', 'ARCHIVO VISUAL')
 
@@ -31,7 +52,7 @@ def get_favicon_final():
 fav_icon_data = get_favicon_final()
 
 st.set_page_config(
-    page_title=f"Said Montaño | {t_pestana}", 
+    page_title=f"Said Montaño | {t_pestana} | Fine Art Shipping USA & MX", 
     page_icon=fav_icon_data, 
     layout="wide", 
     initial_sidebar_state="collapsed"
@@ -831,3 +852,4 @@ components.html("""
     });
 </script>
 """, height=0)
+
