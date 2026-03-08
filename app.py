@@ -811,21 +811,23 @@ if opcion:
     desplegar_info_servicio(opcion)
 import streamlit.components.v1 as components
 
-# --- RESTAURACIÓN DE IMÁGENES Y ZOOM SEGURO ---
+# --- ZOOM FORZADO PARA SERVIDORES SEGUROS ---
 components.html("""
 <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
 <script>
-    function inicializarZoom() {
-        // Seleccionamos las imágenes directamente en este contenedor
-        const images = Array.from(document.querySelectorAll('img')).filter(img => img.width > 50);
-        if (images.length > 0) {
-            mediumZoom(images, {
-                margin: 0,
-                background: 'rgba(0,0,0,0.9)'
-            });
-        }
-    }
-    // Damos un tiempo pequeño para que las imágenes se rendericen
-    setTimeout(inicializarZoom, 1000);
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            // Buscamos todas las imágenes de la página, incluso fuera de nuestro cuadro
+            const images = Array.from(window.parent.document.querySelectorAll('img'))
+                                .filter(img => img.width > 100);
+            
+            if (images.length > 0) {
+                mediumZoom(images, {
+                    margin: 0,
+                    background: 'rgba(0,0,0,0.95)'
+                });
+            }
+        }, 2000); // Esperamos 2 segundos a que todo cargue
+    });
 </script>
 """, height=0)
