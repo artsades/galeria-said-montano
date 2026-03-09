@@ -666,13 +666,14 @@ if archivos_csv:
                     if st.session_state.get('obra_seleccionada') == id_obra:
                         visor_galeria(id_obra)
                         st.session_state.obra_seleccionada = None
-# --- CÁLCULO DE PAGINACIÓN SEGURO ---
-obras_por_pagina = 12 
-total_obras = len(datos_galeria)
+# --- CÁLCULO DE PAGINACIÓN SEGURO (USANDO DF_F) ---
+OBRAS_POR_PAGINA = 12 
+# Usamos df_f que es la variable que ya tienes definida arriba
+total_obras = len(df_f) if 'df_f' in locals() else 0
 total_paginas = 0 
 
 if total_obras > 0:
-    total_paginas = (total_obras // obras_por_pagina) + (1 if total_obras % obras_por_pagina > 0 else 0)
+    total_paginas = (total_obras // OBRAS_POR_PAGINA) + (1 if total_obras % OBRAS_POR_PAGINA > 0 else 0)
 
 # --- PAGINADOR CON AJUSTE MILIMÉTRICO ---
 if total_paginas > 1:
@@ -924,6 +925,7 @@ components.html("""
     });
 </script>
 """, height=0)
+
 
 
 
