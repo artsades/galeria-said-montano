@@ -699,17 +699,12 @@ if total_paginas > 1:
         st.session_state.pag_ref = nuevo_indice
         st.query_params["p"] = nuevo_indice
         
-        # INYECCIÓN DIRECTA DE SCROLL (Said Montaño)
+        # INYECCIÓN DIRECTA DE SCROLL
         st.components.v1.html(
             f"""
             <script>
-                // Buscamos la ventana principal del celular
                 const principal = window.parent.window;
-                
-                // Opción A: Subida instantánea al tope
                 principal.scrollTo(0, 0);
-                
-                // Opción B: Refuerzo por si el navegador es lento
                 setTimeout(() => {{
                     principal.scrollTo({{top: 0, behavior: 'smooth'}});
                 }}, 100);
@@ -718,7 +713,8 @@ if total_paginas > 1:
             height=0
         )
         
-        st.rerun()
+        # EL CAMBIO CLAVE: Esta línea debe estar alineada con el st.components
+        st.rerun()rerun()
 
 
 
@@ -926,6 +922,7 @@ components.html("""
     });
 </script>
 """, height=0)
+
 
 
 
