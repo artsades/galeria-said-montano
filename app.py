@@ -225,52 +225,42 @@ st.markdown(f"""
     header, footer, #MainMenu {{
         visibility: hidden !important;
     }}
- /* --- RESPONSIVE: GRID 2 COLUMNAS (VERSIÓN SAID FINAL) --- */
+ /* --- GRID 2 COLUMNAS: EMPAREJAMIENTO FORZADO --- */
     @media (max-width: 800px) {{
-        /* 1. Evitamos que las celdas se estiren entre sí */
+        /* 1. Obligamos al contenedor a mezclar todas las columnas */
         [data-testid="stHorizontalBlock"] {{
             display: flex !important;
             flex-direction: row !important;
             flex-wrap: wrap !important;
-            align-items: flex-start !important; /* <--- CLAVE: Evita estiramiento vertical */
-            gap: 8px !important;
+            justify-content: space-between !important;
+            gap: 10px !important;
         }}
         
-        [data-testid="stHorizontalBlock"] > div {{
-            width: calc(50% - 4px) !important; 
-            min-width: calc(50% - 4px) !important;
-            flex: 0 0 calc(50% - 4px) !important;
-            padding: 0px !important;
+        /* 2. Hacemos que cada 'carril' de Streamlit sea flexible */
+        [data-testid="column"] {{
+            width: calc(50% - 5px) !important;
+            flex: 1 0 calc(45%) !important; /* Permite que se acomoden de 2 en 2 */
+            max-width: calc(50% - 5px) !important;
+            min-width: calc(45%) !important;
         }}
 
-        /* 2. BLINDAJE DE PROPORCIÓN */
+        /* 3. Blindaje de proporción para que no se estiren */
         div.stButton > button:not(:has(p)) {{
             width: 100% !important;
-            /* Proporción 19:28 aproximada (0.68) */
             aspect-ratio: 19 / 28 !important; 
-            
-            /* BLOQUEO ABSOLUTO */
             height: auto !important;
-            min-height: 1px !important; 
-            /* Calculamos un máximo basado en el ancho del cel (aprox 160-200px) */
-            max-height: 280px !important; 
-            
+            max-height: 280px !important;
             background-size: cover !important;
             background-position: center !important;
-            border: 1px solid #eee !important;
-            margin-bottom: 2px !important;
-            padding: 0px !important;
         }}
-        
-        /* 3. Ajuste de textos compacto */
-        div[style*="font-family: 'Courier Prime'"] {{
-            padding-top: 5px !important;
-        }}
-        
-        div[style*="font-family: 'Courier Prime'"] p {{
-            font-size: 0.60rem !important; /* Un poco más pequeño para evitar saltos de línea */
-            line-height: 1.0 !important;
-            margin: 1px 0 !important;
+
+        /* 4. Ajuste del icono de WhatsApp */
+        /* Lo movemos un poco a la derecha para que no estorbe al botón */
+        a[href*="wa.me"] {{
+            position: absolute !important;
+            right: 0px !important;
+            left: auto !important;
+            top: -42px !important;
         }}
     }}
     </style>
@@ -917,6 +907,7 @@ components.html("""
     });
 </script>
 """, height=0)
+
 
 
 
