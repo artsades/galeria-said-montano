@@ -665,52 +665,48 @@ if archivos_csv:
                         visor_galeria(id_obra)
                         st.session_state.obra_seleccionada = None
 
-       # --- PAGINADOR CON AJUSTE MILIMÉTRICO ---
-if total_paginas > 1:
-    # 1. ESTO ES NUEVO: Creamos un ancla invisible justo arriba de los números
-    # para que al refrescar, el navegador sepa a dónde mirar.
-    st.markdown('<div id="inicio_galeria"></div>', unsafe_allow_html=True)
+      # --- BLOQUE DE RESCATE: PAGINADOR TOTAL ---
+try:
+    # 1. Buscamos qué variable tiene las obras (df_f o datos_galeria)
+    obras_para_contar = []
+    if 'df_f' in locals():
+        obras_para_contar = df_f
+    elif 'datos_galeria' in locals():
+        obras_para_contar = datos_galeria
     
-    st.markdown('<div style="height: 50px;"></div>', unsafe_allow_html=True) 
-    
-    st.markdown("""<style>
-        div.st-key-pag_final_v3 {
-            clear: both;
-            display: flex;
-            justify-content: center;
-        }
-        /* ... (tu estilo de radio se queda igual) ... */
-    </style>""", unsafe_allow_html=True)
-    
-    opciones_pag = [str(i+1) for i in range(total_paginas)]
-    indice_actual = st.session_state.get('pag_ref', 0)
-    
-    sel_p = st.radio(
-        "", 
-        opciones_pag, 
-        index=indice_actual, 
-        horizontal=True, 
-        label_visibility="collapsed", 
-        key="pag_final_v3"
-    )
-    
-    nuevo_indice = int(sel_p) - 1
-    if nuevo_indice != st.session_state.get('pag_ref'):
-        st.session_state.pag_ref = nuevo_indice
-        st.query_params["p"] = nuevo_indice
-        
-        # 2. ESTO ES NUEVO: Inyectamos el "impulso" hacia arriba antes del rerun
-        st.components.v1.html(
-            """
-            <script>
-                window.parent.window.scrollTo(0,0);
-            </script>
-            """,
-            height=0
-        )
-        
-        st.rerun()
+    # 2. Calculamos páginas
+    n_obras = len(obras_para_contar)
+    n_paginas = (n_obras // 12) + (1 if n_obras % 12 > 0 else 0)
 
+    # 3. Dibujamos solo si hay más de una página
+    if n_paginas > 1:
+        st.markdown('<div style="height: 50px;"></div>', unsafe_allow_html=True)
+        
+        # Estilos (Tu diseño Courier Prime)
+        st.markdown("""<style>
+            div.st-key-pag_final_v3 { clear: both; display: flex; justify-content: center; }
+            div.st-key-pag_final_v3 div[role="radiogroup"] { gap: 30px !important; background: transparent !important; }
+            div.st-key-pag_final_v3 label p { font-family: 'Courier Prime' !important; color: #888 !important; }
+            div.st-key-pag_final_v3 label:has(input:checked) p { color: #000 !important; font-weight: bold !important; text-decoration: underline !important; }
+            div.st-key-pag_final_v3 [data-baseweb="radio"] div::after { display: none !important; }
+        </style>""", unsafe_allow_html=True)
+
+        opciones_v3 = [str(i+1) for i in range(n_paginas)]
+        idx_v3 = st.session_state.get('pag_ref', 0)
+        
+        # Si el índice se pasó del límite (por cambiar de técnica), lo reseteamos
+        if idx_v3 >= n_paginas: idx_v3 = 0
+
+        sel_v3 = st.radio("", opciones_v3, index=idx_v3, horizontal=True, label_visibility="collapsed", key="pag_final_v3")
+        
+        nuevo_v3 = int(sel_v3) - 1
+        if nuevo_v3 != st.session_state.get('pag_ref'):
+            st.session_state.pag_ref = nuevo_v3
+            st.query_params["p"] = nuevo_v3
+            st.rerun()
+except Exception as e:
+    # Si algo falla, el programa sigue vivo y no muestra letras rojas
+    pass
 
 
 # --- SECCIÓN 5: PIE DE PÁGINA (SUBIDA DE LÍNEA DIVISORIA) ---
@@ -917,6 +913,7 @@ components.html("""
     });
 </script>
 """, height=0)
+
 
 
 
