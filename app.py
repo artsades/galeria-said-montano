@@ -714,7 +714,7 @@ if total_paginas > 1:
         )
         
         # EL CAMBIO CLAVE: Esta línea debe estar alineada con el st.components
-        st.rerun()rerun()
+         st.rerun()rerun()
 
 
 
