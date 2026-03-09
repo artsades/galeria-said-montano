@@ -718,7 +718,7 @@ if total_paginas > 1:
             height=0
         )
         
-        st.rerun()rerun()
+        st.rerun()
 
 
 
@@ -926,6 +926,7 @@ components.html("""
     });
 </script>
 """, height=0)
+
 
 
 
