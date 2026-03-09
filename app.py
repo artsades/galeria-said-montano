@@ -225,43 +225,50 @@ st.markdown(f"""
     header, footer, #MainMenu {{
         visibility: hidden !important;
     }}
- /* --- PLAN MAESTRO: GRID 2 COLUMNAS (FUERZA BRUTA FINAL) --- */
+/* --- CONFIGURACIÓN DE ESTABILIDAD (ORDEN Y PROPORCIÓN) --- */
     @media (max-width: 800px) {{
-        /* 1. ATACAMOS EL CONTENEDOR RAIZ DEL HORIZONTAL BLOCK */
+        /* 1. Contenedor principal */
         div[data-testid="stHorizontalBlock"] {{
             display: flex !important;
-            flex-flow: row wrap !important; /* Fuerza el flujo lateral */
+            flex-direction: row !important;
+            flex-wrap: wrap !important;
+            align-items: flex-start !important;
             gap: 10px !important;
-            width: 100% !important;
+            justify-content: flex-start !important;
         }}
 
-        /* 2. FORZAMOS A CADA HIJO DIRECTO A SER MEDIA PANTALLA */
-        /* Usamos el selector universal '*' para que no se nos escape ningún div intermedio */
-        div[data-testid="stHorizontalBlock"] > div {{
+        /* 2. Las columnas (Cada una es el 50%) */
+        div[data-testid="column"] {{
+            width: calc(50% - 10px) !important;
             flex: 0 0 calc(50% - 10px) !important;
             min-width: calc(50% - 10px) !important;
             max-width: calc(50% - 10px) !important;
-            width: calc(50% - 10px) !important;
         }}
 
-        /* 3. REGLA PARA EL BOTÓN (19x28cm) */
+        /* 3. La imagen (Blindaje de proporción 19x28) */
         div.stButton > button:not(:has(p)) {{
             width: 100% !important;
             aspect-ratio: 19 / 28 !important;
             height: auto !important;
-            min-height: 150px !important;
             max-height: 280px !important;
             background-size: cover !important;
             background-position: center !important;
             display: block !important;
         }}
 
-        /* 4. REPOSICIÓN DE WHATSAPP */
+        /* 4. Rescate del WhatsApp (Para que no se vea pequeño) */
         a[href*="wa.me"] {{
             position: absolute !important;
-            right: 0px !important;
+            right: 5px !important;
             top: -45px !important;
-            z-index: 99 !important;
+            transform: scale(1.2) !important; /* Lo hacemos un poco más grande */
+            z-index: 999 !important;
+        }}
+
+        /* 5. Textos compactos */
+        div[style*="font-family: 'Courier Prime'"] p {{
+            font-size: 0.60rem !important;
+            line-height: 1.1 !important;
         }}
     }}
     </style>
@@ -908,6 +915,7 @@ components.html("""
     });
 </script>
 """, height=0)
+
 
 
 
