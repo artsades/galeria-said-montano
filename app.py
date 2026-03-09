@@ -251,7 +251,6 @@ st.markdown(f"""
             font-size: 0.65rem !important;
         }}
     }}
-    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -896,6 +895,7 @@ components.html("""
     });
 </script>
 """, height=0)
+
 
 
 
