@@ -225,50 +225,52 @@ st.markdown(f"""
     header, footer, #MainMenu {{
         visibility: hidden !important;
     }}
-/* --- CONFIGURACIÓN DE ESTABILIDAD (ORDEN Y PROPORCIÓN) --- */
+/* --- RESPONSIVE: GRID 2 COLUMNAS (VERSIÓN SAID FINAL) --- */
     @media (max-width: 800px) {{
-        /* 1. Contenedor principal */
-        div[data-testid="stHorizontalBlock"] {{
+        /* 1. Evitamos que las celdas se estiren entre sí */
+        [data-testid="stHorizontalBlock"] {{
             display: flex !important;
             flex-direction: row !important;
             flex-wrap: wrap !important;
-            align-items: flex-start !important;
-            gap: 10px !important;
-            justify-content: flex-start !important;
+            align-items: flex-start !important; /* <--- CLAVE: Evita estiramiento vertical */
+            gap: 8px !important;
+        }}
+        
+        [data-testid="stHorizontalBlock"] > div {{
+            width: calc(50% - 4px) !important; 
+            min-width: calc(50% - 4px) !important;
+            flex: 0 0 calc(50% - 4px) !important;
+            padding: 0px !important;
         }}
 
-        /* 2. Las columnas (Cada una es el 50%) */
-        div[data-testid="column"] {{
-            width: calc(50% - 10px) !important;
-            flex: 0 0 calc(50% - 10px) !important;
-            min-width: calc(50% - 10px) !important;
-            max-width: calc(50% - 10px) !important;
-        }}
-
-        /* 3. La imagen (Blindaje de proporción 19x28) */
+        /* 2. BLINDAJE DE PROPORCIÓN */
         div.stButton > button:not(:has(p)) {{
             width: 100% !important;
-            aspect-ratio: 19 / 28 !important;
+            /* Proporción 19:28 aproximada (0.68) */
+            aspect-ratio: 19 / 28 !important; 
+            
+            /* BLOQUEO ABSOLUTO */
             height: auto !important;
-            max-height: 280px !important;
+            min-height: 1px !important; 
+            /* Calculamos un máximo basado en el ancho del cel (aprox 160-200px) */
+            max-height: 280px !important; 
+            
             background-size: cover !important;
             background-position: center !important;
-            display: block !important;
+            border: 1px solid #eee !important;
+            margin-bottom: 2px !important;
+            padding: 0px !important;
         }}
-
-        /* 4. Rescate del WhatsApp (Para que no se vea pequeño) */
-        a[href*="wa.me"] {{
-            position: absolute !important;
-            right: 5px !important;
-            top: -45px !important;
-            transform: scale(1.2) !important; /* Lo hacemos un poco más grande */
-            z-index: 999 !important;
+        
+        /* 3. Ajuste de textos compacto */
+        div[style*="font-family: 'Courier Prime'"] {{
+            padding-top: 5px !important;
         }}
-
-        /* 5. Textos compactos */
+        
         div[style*="font-family: 'Courier Prime'"] p {{
-            font-size: 0.60rem !important;
-            line-height: 1.1 !important;
+            font-size: 0.60rem !important; /* Un poco más pequeño para evitar saltos de línea */
+            line-height: 1.0 !important;
+            margin: 1px 0 !important;
         }}
     }}
     </style>
@@ -915,6 +917,7 @@ components.html("""
     });
 </script>
 """, height=0)
+
 
 
 
