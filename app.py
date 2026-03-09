@@ -7,9 +7,6 @@ import base64
 import requests
 from bs4 import BeautifulSoup
 
-
-st.container(height=1, border=False) # Esto crea un punto de referencia
-
 # --- FUNCIÓN DE SEO DINÁMICO (ÓLEO Y ACUARELA) ---
 def obtener_seo_estudio():
     # Tus bases sólidas para México y USA
@@ -38,8 +35,10 @@ st.markdown('<meta name="viewport" content="width=device-width, initial-scale=1.
 PALABRAS_SEO = f"{SEO_DINAMICO}, Said Montaño artista, realismo figurativo, arte oscuro, envíos seguros a USA y México."
 # Título dinámico para la pestaña del navegador
 t_pestana = st.session_state.get('tec_ref', 'ARCHIVO VISUAL')
-# Crear un ancla invisible en la parte superior
-st.markdown('<div id="subir"></div>', unsafe_allow_html=True)
+# Crea un espacio vacío al principio de la galería
+top_anchor = st.container()
+with top_anchor:
+    st.write("") # Un espacio invisible
 
 # --- CARGA DEL FAVICON (VERSIÓN RASTREADOR) ---
 def get_favicon_final():
@@ -702,21 +701,9 @@ if total_paginas > 1:
         st.session_state.pag_ref = nuevo_indice
         st.query_params["p"] = nuevo_indice
         
-        # INYECCIÓN DIRECTA DE SCROLL
-        st.components.v1.html(
-            f"""
-            <script>
-                const principal = window.parent.window;
-                principal.scrollTo(0, 0);
-                setTimeout(() => {{
-                    principal.scrollTo({{top: 0, behavior: 'smooth'}});
-                }}, 100);
-            </script>
-            """,
-            height=0
-        )
-        
-        # EL CAMBIO CLAVE: Esta línea debe estar alineada con el st.components
+        # En lugar de JS, simplemente reiniciamos. 
+        # Streamlit, al detectar un cambio de estado, 
+        # suele resetear el scroll al contenedor más alto.
         st.rerun()
 
 
@@ -925,6 +912,7 @@ components.html("""
     });
 </script>
 """, height=0)
+
 
 
 
