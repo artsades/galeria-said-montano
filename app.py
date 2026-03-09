@@ -26,6 +26,8 @@ def obtener_seo_estudio():
         pass 
     return ", ".join(keywords)
 
+st.container(height=1, border=False) # Esto crea un punto de referencia
+
 # Ejecutamos el motor de SEO
 SEO_DINAMICO = obtener_seo_estudio()
 
@@ -922,6 +924,7 @@ components.html("""
     });
 </script>
 """, height=0)
+
 
 
 
