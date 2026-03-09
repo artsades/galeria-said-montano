@@ -60,7 +60,10 @@ st.set_page_config(
 # Inyección SEO (Sin generar espacios ni líneas negras)
 st.markdown(f'<div style="display:none; height:0; width:0; overflow:hidden; visibility:hidden;">{PALABRAS_SEO}</div>', unsafe_allow_html=True)
 
-# --- MEMORIA DE NAVEGACIÓN (F5) ---
+# --- MEMORIA DE NAVEGACIÓN (F5) Y GESTO ATRÁS ---
+query_params = st.query_params
+obra_en_url = query_params.get("obra")
+
 if "p" in st.query_params:
     st.session_state.pag_ref = int(st.query_params["p"])
 elif 'pag_ref' not in st.session_state:
@@ -69,7 +72,7 @@ elif 'pag_ref' not in st.session_state:
 if "t" in st.query_params:
     st.session_state.tec_ref = st.query_params["t"]
 elif 'tec_ref' not in st.session_state:
-    st.session_state.tec_ref = "PINTURA AL OLEO"
+    st.session_state.tec_ref = "ACUARELA" # <--- Aprovechamos para poner Acuarela primero
 
 def image_to_base64(path):
     if os.path.exists(path):
@@ -228,6 +231,9 @@ st.markdown(f"""
 # SECCIÓN 3: CABECERA (LOGO SUPERIOR Y REDES)
 # -----------------------------------------------------------------
 st.markdown('<div class="banner-envios">ENVÍOS NACIONALES E INTERNACIONALES - TRATO DIRECTO CON EL ARTISTA </div>', unsafe_allow_html=True)
+
+# BANNER DE OFERTA ESPECIAL (DESTELLOS DEL MÁS ALLÁ)
+st.info("✨ **OFERTA DE COLECCIÓN:** Adquiere las 4 acuarelas originales de la serie *'Destellos del más allá'* por solo **$10,000 MXN**. Envío incluido.")
 
 # REDUCIMOS EL ESPACIO ENTRE COLUMNAS (gap)
 c1, c2, c3 = st.columns([1.2, 4, 0.8], gap="small") 
@@ -483,7 +489,7 @@ if archivos_csv:
         SIZE_FIRMA_MODAL = "140px" 
         FUENTE_INDUSTRIAL = "'Courier Prime', monospace"
         C_FONDO_MODAL = "#FFFFFF"
-
+        
         # --- FUNCIÓN GLOBAL DEL VISOR ---
         @st.dialog(" ", width="large")
         def visor_galeria(id_ref):
@@ -492,7 +498,13 @@ if archivos_csv:
             for d in range(1, 6):
                 if os.path.exists(f"assets/{id_ref}_det_{d}.jpg"):
                     st.image(f"assets/{id_ref}_det_{d}.jpg", use_container_width=True)
+            
+            # --- AGREGA ESTO AQUÍ ABAJO (Mantenla alineada a la izquierda dentro del def) ---
+            if st.button("VOLVER A LA GALERÍA", use_container_width=True):
+                st.query_params.clear()
+                st.rerun()
 
+        # Aquí sigue tu código de las columnas igual...
         cols = st.columns(5, gap="medium")
         for i, (idx, row) in enumerate(datos_galeria.iterrows()):
             with cols[i % 5]:
@@ -532,6 +544,11 @@ if archivos_csv:
 
                         # 3. EL BOTÓN-IMAGEN
                         if st.button("", key=f"img_btn_{id_obra}_{t_key}", use_container_width=True):
+                            st.query_params["obra"] = id_obra # <--- Esto es lo nuevo
+                            st.rerun() # <--- Esto es lo nuevo
+
+                        # 3.1 ESTE ES EL NUEVO DISPARADOR (Ponlo justo debajo del botón)
+                        if obra_en_url == id_obra:
                             visor_galeria(id_obra)
 
                         # 4. CÁLCULO DE PRECIO
@@ -852,3 +869,4 @@ components.html("""
     });
 </script>
 """, height=0)
+
