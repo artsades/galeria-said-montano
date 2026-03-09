@@ -226,30 +226,31 @@ st.markdown(f"""
         visibility: hidden !important;
     }}
     /* --- RESPONSIVE: 2 COLUMNAS EN CELULAR --- */
-    @media (max-width: 800px) {
+    @media (max-width: 800px) {{
         /* Forzamos a que las columnas de Streamlit se dividan en 2 */
-        [data-testid="stHorizontalBlock"] {
+        [data-testid="stHorizontalBlock"] {{
             display: flex !important;
             flex-direction: row !important;
             flex-wrap: wrap !important;
             gap: 10px !important;
-        }
+        }}
         
-        [data-testid="stHorizontalBlock"] > div {
-            width: calc(50% - 5px) !important; /* 2 piezas por fila */
+        [data-testid="stHorizontalBlock"] > div {{
+            width: calc(50% - 5px) !important; 
             min-width: calc(50% - 5px) !important;
             flex: 0 0 calc(50% - 5px) !important;
-        }
+        }}
 
-        /* Ajustamos el alto de la imagen en celular para que no se vea estirada */
-        div.stButton > button:not(:has(p)) {
-            height: 250px !important; /* Altura ideal para 2 por fila */
-        }
+        /* Ajustamos el alto de la imagen en celular */
+        div.stButton > button:not(:has(p)) {{
+            height: 250px !important; 
+        }}
         
-        /* Ajustamos el tamaño de la letra en celular para que quepa todo */
-        div[style*="font-family: 'Courier Prime'"] p {
+        /* Ajustamos el tamaño de la letra */
+        div[style*="font-family: 'Courier Prime'"] p {{
             font-size: 0.65rem !important;
-        }
+        }}
+    }}
     }
     </style>
     """, unsafe_allow_html=True)
@@ -895,5 +896,6 @@ components.html("""
     });
 </script>
 """, height=0)
+
 
 
