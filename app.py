@@ -225,42 +225,52 @@ st.markdown(f"""
     header, footer, #MainMenu {{
         visibility: hidden !important;
     }}
-  /* --- RESPONSIVE: 2 COLUMNAS SIN ESTIRAR (VERSIÓN FINAL) --- */
+  /* --- RESPONSIVE: GRID 2 COLUMNAS (VERSIÓN SAID FINAL) --- */
     @media (max-width: 800px) {{
+        /* 1. Evitamos que las celdas se estiren entre sí */
         [data-testid="stHorizontalBlock"] {{
             display: flex !important;
             flex-direction: row !important;
             flex-wrap: wrap !important;
-            gap: 10px !important;
+            align-items: flex-start !important; /* <--- CLAVE: Evita estiramiento vertical */
+            gap: 8px !important;
         }}
         
         [data-testid="stHorizontalBlock"] > div {{
-            width: calc(50% - 5px) !important; 
-            min-width: calc(50% - 5px) !important;
-            flex: 0 0 calc(50% - 5px) !important;
+            width: calc(50% - 4px) !important; 
+            min-width: calc(50% - 4px) !important;
+            flex: 0 0 calc(50% - 4px) !important;
+            padding: 0px !important;
         }}
 
-        /* BLOQUEO TOTAL DE PROPORCIÓN (Said Montaño) */
+        /* 2. BLINDAJE DE PROPORCIÓN */
         div.stButton > button:not(:has(p)) {{
             width: 100% !important;
-            /* Forzamos la proporción 19:28 (Ancho/Alto) */
+            /* Proporción 19:28 aproximada (0.68) */
             aspect-ratio: 19 / 28 !important; 
             
-            /* BLOQUEAMOS CUALQUIER INTENTO DE ESTIRAMIENTO */
+            /* BLOQUEO ABSOLUTO */
             height: auto !important;
-            min-height: auto !important; 
-            max-height: 350px !important; /* Límite de seguridad para cel */
+            min-height: 1px !important; 
+            /* Calculamos un máximo basado en el ancho del cel (aprox 160-200px) */
+            max-height: 280px !important; 
             
             background-size: cover !important;
             background-position: center !important;
             border: 1px solid #eee !important;
-            margin-bottom: 5px !important;
+            margin-bottom: 2px !important;
+            padding: 0px !important;
         }}
         
-        /* Ajuste de textos para que no empujen hacia abajo */
+        /* 3. Ajuste de textos compacto */
+        div[style*="font-family: 'Courier Prime'"] {{
+            padding-top: 5px !important;
+        }}
+        
         div[style*="font-family: 'Courier Prime'"] p {{
-            font-size: 0.62rem !important;
-            line-height: 1.1 !important;
+            font-size: 0.60rem !important; /* Un poco más pequeño para evitar saltos de línea */
+            line-height: 1.0 !important;
+            margin: 1px 0 !important;
         }}
     }}
     </style>
@@ -907,6 +917,7 @@ components.html("""
     });
 </script>
 """, height=0)
+
 
 
 
