@@ -7,6 +7,9 @@ import base64
 import requests
 from bs4 import BeautifulSoup
 
+
+st.container(height=1, border=False) # Esto crea un punto de referencia
+
 # --- FUNCIÓN DE SEO DINÁMICO (ÓLEO Y ACUARELA) ---
 def obtener_seo_estudio():
     # Tus bases sólidas para México y USA
@@ -25,8 +28,6 @@ def obtener_seo_estudio():
     except:
         pass 
     return ", ".join(keywords)
-
-st.container(height=1, border=False) # Esto crea un punto de referencia
 
 # Ejecutamos el motor de SEO
 SEO_DINAMICO = obtener_seo_estudio()
@@ -924,6 +925,7 @@ components.html("""
     });
 </script>
 """, height=0)
+
 
 
 
