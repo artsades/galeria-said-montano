@@ -225,38 +225,44 @@ st.markdown(f"""
     header, footer, #MainMenu {{
         visibility: hidden !important;
     }}
- /* --- RESPONSIVE: GRID 2 COLUMNAS (ORDEN CORREGIDO) --- */
+ /* --- GRID 2 COLUMNAS: SOLUCIÓN DEFINITIVA (ORDEN Y PROPORCIÓN) --- */
     @media (max-width: 800px) {{
-        /* 1. REORDENAMIENTO TOTAL */
-        /* Seleccionamos el contenedor de las columnas de Streamlit */
-        div[data-testid="stHorizontalBlock"] {{
+        /* 1. RE-ESTRUCTURACIÓN DEL CONTENEDOR PADRE */
+        [data-testid="stHorizontalBlock"] {{
             display: flex !important;
-            flex-direction: row !important; /* Mantiene la fila */
-            flex-wrap: wrap !important;     /* Permite que bajen solas */
-            justify-content: space-between !important; /* Alinea los bordes */
+            flex-flow: row wrap !important; /* Fuerza el flujo continuo 1,2,3,4... */
             gap: 10px !important;
-        }}
-        
-        /* Forzamos a que cada columna de Streamlit sea una 'celda' */
-        div[data-testid="stHorizontalBlock"] > div {{
-            width: calc(50% - 5px) !important; 
-            min-width: calc(50% - 5px) !important;
-            flex: 1 0 calc(50% - 5px) !important;
-            max-width: calc(50% - 5px) !important;
-            margin: 0 !important;
-            padding: 0 !important;
+            align-items: stretch !important;
         }}
 
-        /* 2. BLINDAJE DE PROPORCIÓN */
+        /* 2. FORZAMOS A LAS COLUMNAS A SER CELDAS DE GRID */
+        [data-testid="column"] {{
+            width: calc(50% - 5px) !important;
+            flex: 1 1 calc(50% - 5px) !important;
+            min-width: calc(50% - 5px) !important;
+            max-width: calc(50% - 5px) !important;
+        }}
+
+        /* 3. BLINDAJE DE LA IMAGEN (EVITA EL ESTIRAMIENTO POST-CARGA) */
         div.stButton > button:not(:has(p)) {{
             width: 100% !important;
-            aspect-ratio: 19 / 28 !important; 
+            aspect-ratio: 19 / 28 !important; /* Proporción de tu obra */
+            
+            /* Bloqueo estricto de altura */
             height: auto !important;
-            min-height: 1px !important; 
+            min-height: 150px !important; /* Altura mínima para que no desaparezca */
+            max-height: 280px !important; /* Altura máxima para que no se estire */
+            
             background-size: cover !important;
             background-position: center !important;
             border: 1px solid #eee !important;
-            margin-bottom: 5px !important;
+            display: block !important;
+        }}
+
+        /* 4. ARREGLO PARA LAS ÚLTIMAS OBRAS (EVITA QUE SEAN GIGANTES) */
+        /* Si solo queda una obra al final, este código evita que ocupe el 100% */
+        [data-testid="column"]:last-child:nth-child(odd) {{
+            max-width: calc(50% - 5px) !important;
         }}
     }}
     </style>
@@ -903,6 +909,7 @@ components.html("""
     });
 </script>
 """, height=0)
+
 
 
 
