@@ -666,13 +666,24 @@ if archivos_csv:
                     if st.session_state.get('obra_seleccionada') == id_obra:
                         visor_galeria(id_obra)
                         st.session_state.obra_seleccionada = None
+# --- CÁLCULO DE PAGINACIÓN SEGURO ---
+obras_por_pagina = 12 # O el número que tengas configurado
+total_obras = len(datos_galeria)
 
+# Definimos un valor por defecto para que nunca falle
+total_paginas = 0 
+
+if total_obras > 0:
+    # Calculamos el total de páginas real
+    total_paginas = (total_obras // obras_por_pagina) + (1 if total_obras % obras_por_pagina > 0 else 0)
+
+# --- TU LÍNEA 671 AHORA ESTARÁ PROTEGIDA ---
+if total_paginas > 1:
+    # Aquí va todo tu estilo CSS del paginador y el st.radio...
        # --- PAGINADOR CON AJUSTE MILIMÉTRICO ---
 if total_paginas > 1:
     # 1. ESTO ES NUEVO: Creamos un ancla invisible justo arriba de los números
-    # para que al refrescar, el navegador sepa a dónde mirar.
-    st.markdown('<div id="inicio_galeria"></div>', unsafe_allow_html=True)
-    
+    # para que al refrescar, el navegador sepa a dónde mirar. 
     st.markdown('<div style="height: 50px;"></div>', unsafe_allow_html=True) 
     
     st.markdown("""<style>
@@ -912,6 +923,7 @@ components.html("""
     });
 </script>
 """, height=0)
+
 
 
 
