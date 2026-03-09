@@ -225,46 +225,38 @@ st.markdown(f"""
     header, footer, #MainMenu {{
         visibility: hidden !important;
     }}
- /* --- PROTOCOLO NUCLEAR: GRID 2 COLUMNAS (SAID MONTAÑO) --- */
+ /* --- PLAN MAESTRO: GRID 2 COLUMNAS (FUERZA BRUTA FINAL) --- */
     @media (max-width: 800px) {{
-        /* 1. ATACAMOS EL CONTENEDOR DE FILA */
+        /* 1. ATACAMOS EL CONTENEDOR RAIZ DEL HORIZONTAL BLOCK */
         div[data-testid="stHorizontalBlock"] {{
             display: flex !important;
-            flex-direction: row !important;
-            flex-wrap: wrap !important;
-            align-items: flex-start !important;
-            justify-content: space-between !important;
-            width: 100% !important;
+            flex-flow: row wrap !important; /* Fuerza el flujo lateral */
             gap: 10px !important;
+            width: 100% !important;
         }}
 
-        /* 2. FORZAMOS A LAS COLUMNAS A SER "FLOTANTES" */
-        div[data-testid="column"] {{
+        /* 2. FORZAMOS A CADA HIJO DIRECTO A SER MEDIA PANTALLA */
+        /* Usamos el selector universal '*' para que no se nos escape ningún div intermedio */
+        div[data-testid="stHorizontalBlock"] > div {{
             flex: 0 0 calc(50% - 10px) !important;
             min-width: calc(50% - 10px) !important;
             max-width: calc(50% - 10px) !important;
             width: calc(50% - 10px) !important;
         }}
 
-        /* 3. ¡ESTO ES LO NUEVO!: ANULAMOS EL DIV INTERMEDIO DE STREAMLIT */
-        /* Streamlit a veces mete un div vacío que fuerza el 100% de ancho */
-        div[data-testid="column"] > div {{
-            width: 100% !important;
-        }}
-
-        /* 4. BLINDAJE DE IMAGEN (19x28cm) */
+        /* 3. REGLA PARA EL BOTÓN (19x28cm) */
         div.stButton > button:not(:has(p)) {{
             width: 100% !important;
             aspect-ratio: 19 / 28 !important;
             height: auto !important;
-            min-height: 180px !important;
+            min-height: 150px !important;
             max-height: 280px !important;
             background-size: cover !important;
             background-position: center !important;
             display: block !important;
         }}
 
-        /* 5. RESCATE DE WHATSAPP */
+        /* 4. REPOSICIÓN DE WHATSAPP */
         a[href*="wa.me"] {{
             position: absolute !important;
             right: 0px !important;
@@ -916,6 +908,7 @@ components.html("""
     });
 </script>
 """, height=0)
+
 
 
 
