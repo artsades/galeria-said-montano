@@ -38,7 +38,7 @@ SEO_DINAMICO = obtener_seo_estudio()
 st.markdown('<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">', unsafe_allow_html=True)
 
 # --- BÓVEDA SEO ACTUALIZADA ---
-PALABRAS_SEO = f"{SEO_DINAMICO}, Said Montaño artista, realismo figurativo, arte oscuro, envíos seguros a USA y México."
+PALABRAS_SEO = f"{SEO_DINAMICO}, Said Montaño artista, realismo figurativo, arte oscuro, creepyart, envíos seguros a USA y México."
 # Título dinámico para la pestaña del navegador
 t_pestana = st.session_state.get('tec_ref', 'ARCHIVO VISUAL')
 # Crear un ancla invisible en la parte superior
@@ -364,7 +364,7 @@ with c3:
         <div style="display: flex; gap: 40px;">
             <a href="https://wa.me/5215610810026?text={msg_gral}" target="_blank"><img src="data:image/png;base64,{icon_wa_b64}" style="width:18px; filter:brightness(0);"></a>
             <a href="https://www.instagram.com/saidmontano_/" target="_blank"><img src="data:image/png;base64,{icon_ig_b64}" style="width:18px; filter:brightness(0);"></a>
-            <a href="https://www.tiktok.com/@saidmaokh" target="_blank"><img src="data:image/png;base64,{icon_tk_b64}" style="width:18px; filter:brightness(0);"></a>
+            <a href="https://www.tiktok.com/@saidmontano_" target="_blank"><img src="data:image/png;base64,{icon_tk_b64}" style="width:18px; filter:brightness(0);"></a>
         </div>
         <span class="txt-redes" style="color:#000; font-family:Courier Prime; font-size:0.6rem; font-weight:bold; letter-spacing:1px; text-transform:uppercase;">CONTACTO</span>
     </div>
@@ -969,7 +969,7 @@ with f1:
     msg_gral = "Hola Said, visité tu galería web y me gustaría ponerme en contacto contigo.".replace(" ", "%20")
     redes_html += f'<a href="https://wa.me/5215610810026?text={msg_gral}" target="_blank"><img src="data:image/png;base64,{icon_wa_b64}" style="width:18px; filter:brightness(0);"></a>'
     html_redes += f'<a href="https://www.instagram.com/saidmontano_/" target="_blank"><img src="data:image/png;base64,{icon_ig_b64}" style="width:18px; filter:brightness(0);"></a>'
-    html_redes += f'<a href="https://www.tiktok.com/@saidmaokh" target="_blank"><img src="data:image/png;base64,{icon_tk_b64}" style="width:18px; filter:brightness(0);"></a>'
+    html_redes += f'<a href="https://www.tiktok.com/@saidmontano_" target="_blank"><img src="data:image/png;base64,{icon_tk_b64}" style="width:18px; filter:brightness(0);"></a>'
     st.markdown(html_redes + '</div>', unsafe_allow_html=True)
     st.markdown("<p style='color:#000000; font-family:Courier Prime; font-size:0.7rem; margin-top:5px;'>art.sades@gmail.com</p>", unsafe_allow_html=True)
 
